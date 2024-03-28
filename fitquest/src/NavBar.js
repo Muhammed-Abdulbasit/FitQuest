@@ -11,14 +11,14 @@ export function NavBar() {
 
   return (
     <div>
-        <div className="navbar">
-            <ul>
-                <li><Link to='/'>Home</Link></li>
-                <li><Link to='/SecondScreen'>Second</Link></li>
-                <li><Link to='/ThirdScreen'>Third</Link></li>
-                <li><div onClick={toggleDropdown}>Profile</div></li>
-            </ul>
-        </div>
+      <div className="navbar">
+        <ul>
+          <li><Link to='/'>Home</Link></li>
+          <li><Link to='/SecondScreen'>Second</Link></li>
+          <li><Link to='/LoginScreen'>Login</Link></li>
+          <li><div onClick={toggleDropdown}>Profile</div></li>
+        </ul>
+      </div>
     </div>
   );
 }
