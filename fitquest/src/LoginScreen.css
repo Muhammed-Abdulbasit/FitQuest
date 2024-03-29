@@ -1,11 +1,20 @@
 .LoginScreen {
     text-align: center;
     margin-top: 10%;
-
-
 }
 .visible{
     margin: 5px;
+}
+.loginstatus{
+    
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+button{
+        width: fit-content;
+        height: fit-content;
 }
 input[type=checkbox] {
     margin-bottom: 15px;
@@ -21,5 +30,5 @@ input[type=password] {
     height: 25px;
     width: 200px;
     margin: 15px;
-
+    
 }

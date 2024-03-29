@@ -4,6 +4,7 @@ import { HomeScreen } from './HomeScreen';
 import { SecondScreen } from './SecondScreen';
 import { LoginScreen } from './LoginScreen';
 import { RegistrationScreen } from './Registration';
+import { ProfileScreen } from './ProfileScreen';
 
 export const AppRoutes = () => {
   return (
@@ -13,6 +14,7 @@ export const AppRoutes = () => {
         <Route path="/SecondScreen" element={<SecondScreen />} />
         <Route path="/LoginScreen" element={<LoginScreen />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
+        <Route path="/ProfileScreen" element={ <ProfileScreen/>} />
       </Routes>
     </Router>
   );
