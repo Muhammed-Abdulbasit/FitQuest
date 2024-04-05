@@ -14,7 +14,7 @@ export function NavBar() {
       <div className="navbar">
         <ul>
           <li><Link to='/'>Home</Link></li>
-          <li><Link to='/SecondScreen'>Second</Link></li>
+          <li><Link to='/ChallengeScreen'>Challenges</Link></li>
           <li><Link to='/LoginScreen'>Login</Link></li>
           <li><div onClick={toggleDropdown}>Profile</div></li>
         </ul>
