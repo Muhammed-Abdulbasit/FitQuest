@@ -1,5 +1,5 @@
 import './Registration.css';
-import { NavBar } from './NavBar';
+import { NavBar } from './components/NavBar';
 import { Link } from 'react-router-dom';
 
 export function RegistrationScreen() {

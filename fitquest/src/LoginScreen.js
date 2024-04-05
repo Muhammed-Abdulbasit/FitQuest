@@ -1,5 +1,5 @@
 import './LoginScreen.css';
-import { NavBar } from './NavBar';
+import { NavBar } from './components/NavBar';
 import { SecondScreen } from './SecondScreen';
 import { Link } from 'react-router-dom';
 

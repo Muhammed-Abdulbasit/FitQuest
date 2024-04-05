@@ -1,5 +1,5 @@
 import './SecondScreen.css';
-import { NavBar } from './NavBar';
+import { NavBar } from './components/NavBar';
 
 export function SecondScreen() {
   return (
