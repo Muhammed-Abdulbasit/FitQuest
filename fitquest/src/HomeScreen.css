@@ -1,6 +1,5 @@
-
 .homescreen{
-  background-color: #2fece9;
+    background-color: #2fece9;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

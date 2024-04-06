@@ -1,0 +1,35 @@
+.challenge-card{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 250px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px;
+    box-shadow: 3px 3px #888888;
+    background-color: rgba(79, 251, 0, 0.8);
+}
+
+.challenge-card img{
+    width: 100%;
+    height: 30%;
+    object-fit: cover;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.challenge-card h5 {
+    margin: 10px 10px;
+}
+
+.challenge-card p{
+    font-size: 20px;
+    margin: 5px
+}
+
+.challenge-card p:nth-of-type(2){
+    font-size: 20px;
+}
