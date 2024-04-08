@@ -1,20 +1,27 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomeScreen } from './HomeScreen';
-import { SecondScreen } from './SecondScreen';
+import { ChallengeScreen } from './ChallengeScreen';
 import { LoginScreen } from './LoginScreen';
 import { RegistrationScreen } from './Registration';
-import { ProfileScreen } from './ProfileScreen';
+import { AchievementsScreen } from './AchievementsScreen'
+import { LeaderboardScreen } from './LeaderboardScreen'
+import { LogScreen } from './LogScreen'
+import { ProfileScreen } from './ProfileScreen'
+
 
 export const AppRoutes = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
-        <Route path="/SecondScreen" element={<SecondScreen />} />
+        <Route path="/ChallengeScreen" element={<ChallengeScreen />} />
         <Route path="/LoginScreen" element={<LoginScreen />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
-        <Route path="/ProfileScreen" element={ <ProfileScreen/>} />
+        <Route path="/AchievementsScreen" element={<AchievementsScreen />} />
+        <Route path="/LeaderboardScreen" element={<LeaderboardScreen />} />
+        <Route path="/LogScreen" element={<LogScreen />} />
+        <Route path="/ProfileScreen" element={<ProfileScreen />} />
       </Routes>
     </Router>
   );

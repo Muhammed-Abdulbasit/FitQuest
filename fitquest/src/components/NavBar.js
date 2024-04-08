@@ -14,8 +14,12 @@ export function NavBar() {
       <div className="navbar">
         <ul>
           <li><Link to='/'>Home</Link></li>
-          <li><Link to='/SecondScreen'>Second</Link></li>
+          <li><Link to='/ChallengeScreen'>Challenges</Link></li>
+          <li><Link to='/AchievementsScreen'>Achievements</Link></li>
+          <li><Link to='/LeaderboardScreen'>Leaderboard</Link></li>
+          <li><Link to='/LogScreen'>Log</Link></li>
           <li><Link to='/LoginScreen'>Login</Link></li>
+          
           <li><div onClick={toggleDropdown}>Profile</div></li>
         </ul>
       </div>
