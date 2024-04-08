@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './LoginScreen.css'
-import { NavBar } from './NavBar';
+import { NavBar } from './components/NavBar';
 
 export function LoginScreen() {
   const [email, setEmail] = useState('');

@@ -1,5 +1,5 @@
 import './Registration.css';
-import { NavBar } from './NavBar';
+import { NavBar } from './components/NavBar';
 import { Link, Navigate} from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
