@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import './LoginScreen.css';
-import { NavBar } from './NavBar';
+// LoginScreen.js
+import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import './LoginScreen.css'
+import { NavBar } from './NavBar';
 
 export function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -10,16 +11,17 @@ export function LoginScreen() {
   const [loginStatus, setLoginStatus] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
   const login = () => {
     axios.post("http://localhost:8000/login", {
       email: email,
       password: password,
     }).then((response) => {
-      if (response.data.message === "Successfully Logged In") {
-        setLoginStatus(response.data.message);
-        setIsLoggedIn(true); // Set isLoggedIn to true after successful login
+      if (response.status === 200) {
+        setLoginStatus("Successfully Logged In");
+        setIsLoggedIn(true);
       } else {
-        setLoginStatus("Login failed"); // Handle login failure
+        setLoginStatus("Login failed");
       }
     }).catch(error => {
       console.error('Error logging in:', error);
@@ -29,6 +31,7 @@ export function LoginScreen() {
 
   if (isLoggedIn) {
     return <Navigate to="/ProfileScreen"/>;
+
   }
 
   const toggleVisibility = () => {
@@ -42,14 +45,30 @@ export function LoginScreen() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <div className="LoginScreen">
-        <h1>Welcome to FitQuest</h1>
-        <label htmlFor='email'>Email</label>
-        <input type='email' placeholder='Enter Email' onChange={(e) => { setEmail(e.target.value) }} name='email' /><br />
-        Password <input type="password" placeholder='Enter Password' id='password' onChange={(e) => { setPassword(e.target.value) }} name='password' /><br />
-        Check Password <input type='checkbox' onClick={toggleVisibility} name='visible' /><br />
-        <button className='logbtn' onClick={login}>LogIn</button> Need an account? <Link to='/Registration'>SignUp</Link>
+        <div>
+          <h1>Welcome to FitQuest</h1>
+          <span>Please Enter Your Details To Log In</span>
+        </div>
+        <div className="form">
+          <input type='email' placeholder='Enter Email' onChange={(e) => { setEmail(e.target.value) }} name='email' /><br></br>
+          <input type="password" placeholder='Enter Password' id='password' onChange={(e) => { setPassword(e.target.value) }} name='password' />
+        </div>
+        Check Password <input type='checkbox' onClick={toggleVisibility} name='visible' />
+        <div>
+          <div>
+            <button className='logbtn' onClick={login}>LogIn</button>
+          </div>
+          
+          Need an account? {" "}
+          <Link to={'/Registration'}>
+           SignUp
+          </Link>
+        
+          
+     
+        </div>
       </div>
       <h1 className='loginstatus'>{loginStatus}</h1>
     </div>

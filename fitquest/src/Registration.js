@@ -1,6 +1,6 @@
 import './Registration.css';
 import { NavBar } from './NavBar';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -13,8 +13,17 @@ export function RegistrationScreen() {
     const [genderReg, setGender] = useState('');
     const [heightReg, setHeight] = useState('');
     const [weightReg, setWeight] = useState('');
+    const[SignedUp, setSignUp] = useState(false);
+    const[ SignUpStatus, setStatus] = useState('');
 
 const register =()=>{
+    if (!nameReg || !emailReg || !usernameReg || !passwordReg || !birthReg || !genderReg || !heightReg || !weightReg) {
+        // Display an error message or handle the empty fields as needed
+        console.error('Please fill in all fields');
+        setStatus('Please fill in all fields');
+        return;
+    }
+
     axios.post('http://localhost:8000/register', {
         Name: nameReg,
         email: emailReg,
@@ -24,45 +33,47 @@ const register =()=>{
         gender: genderReg,
         height: heightReg,
         weight: weightReg
-    }).then((response)=>{
+    }).then((response) => {
+        setSignUp(true);
         console.log(response);
-    })
+    }).catch((error) => {
+        // Handle registration failure
+        console.error('Error registering:', error);
+    });
 }
+if(SignedUp){
+    return <Navigate to="/ProfileScreen"/>;
 
-    const toggleVisibility = () => {
-        var visible = document.getElementById('password');
-        if (visible.type === 'password') {
-            visible.type = 'text';
-        } else {
-            visible.type = 'password';
-        }
-    }
+}
 
     return (
         <div>
             <NavBar />
             <div className="RegistrationScreen">
+                <div>
                 <h1>Welcome to FitQuest</h1>
+                <span>Start Signing Up Below</span>
+                </div>
                 
-                    Name <input type='text' onChange={(e)=>{setName(e.target.value)}}/><br></br>
-                    Email <input type='email' onChange={(e)=>{setEmail(e.target.value)}} /><br />
-                    Username<input type='text'onChange={(e)=>{setUsername(e.target.value)}} /><br></br>
-                Password <input type="password" id='password' name='password' onChange={(e)=>{setPassword(e.target.value)}}  /><br />
-                Date of Birth <input type='date' onChange={(e)=>{setBirth(e.target.value)}} /><br></br>
+                <div>
+                   Full Name<br></br> <input type='text' placeholder='Enter Name' onChange={(e)=>{setName(e.target.value)}}/><br></br>
+                    Email <br></br><input type='email' placeholder='Enter Email' onChange={(e)=>{setEmail(e.target.value)}} /><br />
+                    Username<br></br><input type='text' placeholder='Enter Username' onChange={(e)=>{setUsername(e.target.value)}} /><br></br>
+                Password<br></br> <input type="password" placeholder='Enter Password' id='password' name='password' onChange={(e)=>{setPassword(e.target.value)}}  /><br />
+                Date of Birth <br></br><input type='date'  onChange={(e)=>{setBirth(e.target.value)}} /><br></br>
                 
-                    Gender <input type='radio' name='gselect' className='gender' value="M" onChange={(e)=>{setGender(e.target.value)}} />M 
+                    Gender:<input type='radio' name='gselect' className='gender' value="M" onChange={(e)=>{setGender(e.target.value)}} />M 
                     <input type='radio' name='gselect' className='gender' value={"F"} onChange={(e)=>{setGender(e.target.value)}} />F 
-                    <br></br>
-                    Height(ft) <input type='number' name='height' onChange={(e)=>{setHeight(e.target.value)}} /><br></br>
-                    Weight(lb) <input type='number' name='weight'onChange={(e)=>{setWeight(e.target.value)}} /><br></br>
-
-
-
-                   
-                    <button onClick={register} >SignUp</button> Already have an account? <Link to='/LoginScreen'>Login</Link>
+                    <br></br><br></br>
+                    Height<br></br> <input type='number' placeholder='Enter Height in Ft' name='height' onChange={(e)=>{setHeight(e.target.value)}} /><br></br>
+                    Weight<br></br> <input type='number' placeholder='Enter Height in Ib' name='weight'onChange={(e)=>{setWeight(e.target.value)}} /><br></br>
+                    </div>
+                    <button className='logbtn' onClick={register} >SignUp</button> Already have an account? <Link to='/LoginScreen'>Login</Link>
 
                 
             </div>
+            <h1>{SignUpStatus}</h1>
         </div>
+        
     );
 }
