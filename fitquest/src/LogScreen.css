@@ -2,3 +2,42 @@
     text-align: center;
     margin-top: 10%;
 }
+body{
+    background-color: #2fece9;
+}
+.workout-log{
+    border-radius: 5px;
+    border: 1px solid black;
+    width: fit-content;
+    height: fit-content;
+  margin: auto;
+  margin-bottom: 50px;
+  background-color: lightgray;
+  color: black;
+}
+.food-log{
+    border-radius: 5px;
+    border: 1px solid black;
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+    background-color: lightgray;
+  color: black;
+position: relative;
+  left: -10%;
+}
+.log{
+ 
+    width: 50%;
+    height: fit-content;
+  margin: auto;  
+
+}
+th, td{
+    text-align: center;
+    border: 1px solid black;
+    width: 102px;
+}
+input{
+    width: 100px;
+}
