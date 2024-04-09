@@ -28,7 +28,84 @@ app.get("/users", (req, res) => {
         return res.json(data);
     });
 });
+//********For Workout Log Table */
+app.post("/workoutlog", (req,res)=>{
+    const name = req.body.name;
+    const duration = req.body.duration;
+    const type = req.body.type;
+    const date =req.body.date;
 
+    db.query("INSERT INTO workout_log(name,duration,type,date) VALUES(?,?,?,?)",
+    [name, duration, type, date],
+    (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "An error occurred while entering data" });
+        }
+        console.log("Data Entered")
+        return res.json({ result });
+    });
+});
+
+//General for Now
+app.get("/workoutlog", (req, res) => {
+    const q = "SELECT * FROM workout_log";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
+//Delete a Workout from the log
+app.delete('/workoutlog/:id', async (req,res)=>{
+    const id = req.params.id;
+
+    db.query("DELETE FROM workout_log WHERE id = ?", [id],
+    (err,result)=>{
+if(err) return res.json(err);
+        return res.json("Log Data Has Been Deleted");
+
+    }
+    )
+});
+
+app.post("/nutritionlog", (req,res)=>{
+    const name = req.body.name;
+    const calorie = req.body.calorie;
+    const protein = req.body.protein;
+    const carbs = req.body.carbs;
+    const date =req.body.date;
+
+    db.query("INSERT INTO nutrition_log(name,calories,protein,carbohydrates,date) VALUES(?,?,?,?,?)",
+    [name, calorie, protein,carbs, date],
+    (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "An error occurred while entering data" });
+        }
+        console.log("Data Entered")
+        return res.json({ result });
+    });
+});
+
+//General for Now
+app.get("/nutritionlog", (req, res) => {
+    const q = "SELECT * FROM nutrition_log";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
+app.delete('/nutritionlog/:id', async (req,res)=>{
+    const id = req.params.id;
+
+    db.query("DELETE FROM nutrition_log WHERE id = ?", [id],
+    (err,result)=>{
+if(err) return res.json(err);
+        return res.json("Log Data Has Been Deleted");
+
+    }
+    )
+});
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
