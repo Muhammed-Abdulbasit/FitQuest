@@ -17,7 +17,8 @@ export function LoginScreen() {
       email: email,
       password: password,
     }).then((response) => {
-      if (response.status === 200) {
+      if (response.data.Login) {
+        localStorage.setItem("token", response.data.token)
         setLoginStatus("Successfully Logged In");
         setIsLoggedIn(true);
       } else {

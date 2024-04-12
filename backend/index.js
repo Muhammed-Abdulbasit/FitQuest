@@ -67,6 +67,24 @@ if(err) return res.json(err);
     }
     )
 });
+app.put('/workoutlog/:id', (req, res) => {
+    const id = req.params.id;
+    const { name, duration, type, date } = req.body;
+
+    db.query(
+        'UPDATE workout_log SET name=?, duration=?, type=?, date=? WHERE id=?',
+        [name, duration, type, date, id],
+        (err, result) => {
+            if (err) {
+                console.error('Error updating workout log:', err);
+                return res.status(500).json({ message: 'An error occurred while updating workout log' });
+            }
+            console.log('Workout log updated successfully');
+            return res.json({ message: 'Workout log updated successfully' });
+        }
+    );
+});
+
 
 app.post("/nutritionlog", (req,res)=>{
     const name = req.body.name;
@@ -106,6 +124,25 @@ if(err) return res.json(err);
     }
     )
 });
+
+app.put('/nutritionlog/:id', async (req, res) => {
+    const id = req.params.id;
+    const { name, calorie, protein, carbs, date } = req.body;
+
+    db.query(
+        'UPDATE nutrition_log SET name=?, calories=?, protein=?, carbohydrates=?, date=? WHERE id=?',
+        [name, calorie, protein, carbs, date, id],
+        (err, result) => {
+            if (err) {
+                console.error('Error updating nutrition log:', err);
+                return res.status(500).json({ message: 'An error occurred while updating nutrition log' });
+            }
+            console.log('Nutrition log updated successfully');
+            return res.json({ message: 'Nutrition log updated successfully' });
+        }
+    );
+});
+
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -118,14 +155,47 @@ app.post("/login", (req, res) => {
                 return;
             }
             if (result.length > 0) {
-               
-                res.status(200).send({ message: "Successfully logged in" });
+                const id = result[0].id;
+const token = jwt.sign({id}, "jwtSecertKey", {expiresIn: 300});
+
+               res.json({Login: true, token, result});
             } else {
                 res.status(401).send({ message: "Wrong username/password" });
             }
         });
 });
-
+const verifyJwt = (req,res,next) =>{
+    const token = req.headers["access-token"];
+    if(!token){
+        return res.json('Need a token');
+    }else{
+        jwt.verify(token,"jwtSecertKey", (err, decoded)=>{
+            if(err){
+                res.json("Not Authentificated")
+            }else{
+                req.userid = decoded.id;
+                next();
+            }
+        } )
+    }
+}
+app.get('/checkauth',verifyJwt ,(req, res)=>{
+    return res.json("Authenticated")
+})
+app.get('/user', verifyJwt, (req, res) => {
+    // Assuming req.userid contains the user ID extracted from the JWT token
+    const userId = req.userid;
+    
+    // Query the database to fetch user information based on the user ID
+    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
+      if (err) {
+        res.status(500).json({ error: 'An error occurred while fetching user information' });
+      } else {
+        // Assuming the result is an object representing the user
+        res.status(200).json(result[0]);
+      }
+    });
+  });
 app.post("/register", (req, res) => {
     const Name = req.body.Name;
     const email = req.body.email;
@@ -150,7 +220,19 @@ app.post("/register", (req, res) => {
 
 
 
-
+// Assuming you have a GET endpoint to retrieve user information
+app.get('/user/:userId', (req, res) => {
+    const userId = req.params.userId;
+    // Query the database for user information based on userId
+    // Replace this with your database query logic
+    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
+      if (err) {
+        res.status(500).json({ error: 'An error occurred while fetching user information' });
+      } else {
+        res.status(200).json(result[0]); // Assuming the result is an object representing the user
+      }
+    });
+  });
 
 
 app.listen(8000, () => {

@@ -10,12 +10,14 @@ export function LogScreen() {
   const [workoutDate, setworkoutDate] = useState("");
   const [workoutType, setworkoutType] = useState("");
   const [workoutLogs, setWorkoutLogs] = useState([]);
+  const [editWorkoutLog, setEditWorkoutLog] = useState(null);
   const [foodName, setfoodName] = useState("");
   const [calorie, setCalorie] = useState("");
   const [carb, setCarb] = useState("");
   const [protein, setProtein] = useState("");
   const [foodDate, setFoodDate] = useState("");
   const [nutrtionLogs, setNutritionLogs] = useState([]);
+  const [editNutritionLog, setEditNutritionLog] = useState(null);
 
   const addWorkoutLog =()=>{
     axios.post('http://localhost:8000/workoutlog', {
@@ -40,6 +42,21 @@ const fetchWorkoutLogs = () => {
       console.error('Error fetching workout logs:', error);
     });
 };
+const handleEditWorkoutLog = (log) => {
+  setEditWorkoutLog(log);
+};
+// Function to update workout log
+const updateWorkoutLog = async (id) => {
+  try {
+    await axios.put(`http://localhost:8000/workoutlog/${id}`, editWorkoutLog);
+    console.log('Workout log updated successfully');
+    setEditWorkoutLog(null); // Reset editWorkoutLog state
+    fetchWorkoutLogs(); // Fetch updated logs
+  } catch (error) {
+    console.error('Error updating workout log:', error);
+  }
+};
+
 const deleteWorkoutLog = async (id) => {
 
   try {
@@ -85,64 +102,109 @@ const deleteNutritionLog = async (id) => {
     console.error('Error deleting nutrition log:', error);
   }
 };
+const handleEditNutritionLog = (log) => {
+  setEditNutritionLog(log);
+};
+// Function to update workout log
+const updateNutritionLog = async (id) => {
+  try {
+    await axios.put(`http://localhost:8000/nutritionlog/${id}`, editNutritionLog);
+    console.log('Nutrition log updated successfully');
+    setEditNutritionLog(null); // Reset editNutritionLog state
+    fetchNutritionLogs(); // Fetch updated logs
+  } catch (error) {
+    console.error('Error updating nutrition log:', error);
+  }
+};
+
+
 
 useEffect(() =>{
   fetchWorkoutLogs();
 fetchNutritionLogs();
 }, []);
-  return (
-    <div>
-        <NavBar/>
-      <div className="log-screen">
-        <h1>Workout Log</h1>
-      </div>
-      <div className='log'>
-
-
+return (
+  <div>
+    <NavBar />
+    <div className="log-screen">
+      <h1>Workout Log</h1>
+    </div>
+    <div className='log'>
 
       <div className='workout-log'>
-          <table >
+        <table>
           <thead>
-            <tr >
-              <th >Name</th>
-              <th >Type</th>
-              <th >Duration</th>
-              <th >Date</th>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Duration</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <td><input type='text' name='workoutname'  onChange={(e) => { setworkoutName(e.target.value) }}></input></td>
-            <td>
-            <select onChange={(e) => {setworkoutType(e.target.value)}}>
-            <option>Select</option>
-            <option>Strength</option>
-            <option>Cardio</option>
-            <option>Balance</option>
-            <option>Flexibility</option>
-            <option>Aerobic</option>
-        </select>
-            </td>
-            <td><input type='number' name='workoutTime' placeholder={'Enter In Mins'}  onChange={(e) => { setworkoutTime(e.target.value) }}></input></td>
-            <td><input type='date' name='workoutDate' onChange={(e)=>{ setworkoutDate(e.target.value)}}></input></td>
-            <td><input type='submit'  name='workoutSubmit' value={'Add New Row'} onClick={addWorkoutLog}></input></td>
-          </tbody>
-          <tbody>
-          {workoutLogs.map((log) => (
-               <tr key={log.id}>
-                  <td>{log.name}</td>
-                  <td>{log.type}</td>
-                  <td>{log.duration} mins</td>
-                  <td>{log.date}</td>
+              <tr>
+                <td><input type='text' name='workoutname' value={workoutName} onChange={(e) => { setworkoutName(e.target.value) }}></input></td>
+                <td>
+                  <select value={workoutType} onChange={(e) => { setworkoutType(e.target.value) }}>
+                    <option>Select</option>
+                    <option>Strength</option>
+                    <option>Cardio</option>
+                    <option>Balance</option>
+                    <option>Flexibility</option>
+                    <option>Aerobic</option>
+                  </select>
+                </td>
+                <td><input type='number' name='workoutTime' placeholder={'Enter In Mins'} value={workoutTime} onChange={(e) => { setworkoutTime(e.target.value) }}></input></td>
+                <td><input type='date' name='workoutDate' value={workoutDate} onChange={(e) => { setworkoutDate(e.target.value) }}></input></td>
+                <td><input type='submit' name='workoutSubmit' value={'Add New Row'} onClick={addWorkoutLog}></input></td>
+              </tr>
+            </tbody>
+            <tbody>
+              {workoutLogs.map((logData) => (
+                <tr key={logData.id}>
                   <td>
-                    <button> Edit</button>
-                    <button onClick={() => deleteWorkoutLog(log.id)}>Delete</button>
-                    </td>
+                    {editWorkoutLog && editWorkoutLog.id === logData.id ? (
+                      <input type="text" value={editWorkoutLog.name} onChange={(e) => setEditWorkoutLog({ ...editWorkoutLog, name: e.target.value })} />
+                    ) : logData.name}
+                  </td>
+                  <td>
+                    {editWorkoutLog && editWorkoutLog.id === logData.id ? (
+                      <select value={editWorkoutLog.type} onChange={(e) => setEditWorkoutLog({ ...editWorkoutLog, type: e.target.value })}>
+                        <option value="Strength">Strength</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Balance">Balance</option>
+                        <option value="Flexibility">Flexibility</option>
+                        <option value="Aerobic">Aerobic</option>
+                      </select>
+                    ) : logData.type}
+                  </td>
+                  <td>
+                    {editWorkoutLog && editWorkoutLog.id === logData.id ? (
+                      <input type="number" value={editWorkoutLog.duration} onChange={(e) => setEditWorkoutLog({ ...editWorkoutLog, duration: e.target.value })} />
+                    ) : `${logData.duration} mins`}
+                  </td>
+                  <td>
+                    {editWorkoutLog && editWorkoutLog.id === logData.id ? (
+                      <input type="date" value={editWorkoutLog.date} onChange={(e) => setEditWorkoutLog({ ...editWorkoutLog, date: e.target.value })} />
+                    ) : logData.date}
+                  </td>
+                  <td>
+                    {editWorkoutLog && editWorkoutLog.id === logData.id ? (
+                      <button onClick={() => updateWorkoutLog(logData.id)}>Save</button>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEditWorkoutLog(logData)}>Edit</button>
+                        <button onClick={() => deleteWorkoutLog(logData.id)}>Delete</button>
+                      </>
+                    )}
+                  </td>
                 </tr>
               ))}
-      </tbody>
-          </table>
+            </tbody>
+        </table>
       </div>
+
       <div className="log-screen">
         <h1>Food Log</h1>
       </div>
@@ -171,14 +233,41 @@ fetchNutritionLogs();
           <tbody>
           {nutrtionLogs.map((log) => (
                   <tr key={log.id}>
-                  <td>{log.name}</td>
-                  <td>{log.calories}</td>
-                  <td>{log.carbohydrates} grams</td>
-                  <td>{log.protein} grams</td>
-                  <td>{log.date}</td>
+                       <td>
+                    {editNutritionLog && editNutritionLog.id === log.id ? (
+                      <input type="text" value={editNutritionLog.name} onChange={(e) => setEditNutritionLog({ ...editNutritionLog, name: e.target.value })} />
+                    ) : log.name}
+                  </td>
                   <td>
-                    <button>Edit</button>
+      {editNutritionLog && editNutritionLog.id === log.id ? (
+        <input type='number' value={editNutritionLog.calorie} onChange={(e) => { setEditNutritionLog({ ...editNutritionLog, calorie: e.target.value }) }}></input>
+      ) : `${log.calories} cal`}
+    </td>
+    <td>
+      {editNutritionLog && editNutritionLog.id === log.id ? (
+        <input type='number' value={editNutritionLog.carb} onChange={(e) => { setEditNutritionLog({ ...editNutritionLog, carbs: e.target.value }) }}></input>
+      ) : `${log.carbohydrates} grams`}
+    </td>
+
+    <td>
+      {editNutritionLog && editNutritionLog.id === log.id ? (
+        <input type='number' value={editNutritionLog.protein} onChange={(e) => { setEditNutritionLog({ ...editNutritionLog, protein: e.target.value }) }}></input>
+      ) : `${log.protein} grams`}
+    </td>
+                  <td>
+                  {editNutritionLog && editNutritionLog.id === log.id ? (
+        <input type='date' value={editNutritionLog.date} onChange={(e) => { setEditNutritionLog({ ...editNutritionLog, date: e.target.value }) }}></input>
+      ) : log.date}</td>
+               
+                  <td>
+                    {editNutritionLog && editNutritionLog.id === log.id ?(
+                      <button onClick={() => updateNutritionLog(log.id)}>Save</button>
+                      ):(
+                        <>
+                        <button onClick={()=> handleEditNutritionLog(log)}>Edit</button>
                     <button onClick={() => deleteNutritionLog(log.id)}>Delete</button>
+                        </>       
+                      )}          
                     </td>
                 </tr>
               ))}
