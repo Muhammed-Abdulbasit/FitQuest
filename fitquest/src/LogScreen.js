@@ -161,8 +161,8 @@ return (
               </tr>
             </tbody>
             <tbody>
-              {workoutLogs.map((logData) => (
-                <tr key={logData.id}>
+            {Array.isArray(workoutLogs) && workoutLogs.map((logData) => (
+    <tr key={logData.id}>
                   <td>
                     {editWorkoutLog && editWorkoutLog.id === logData.id ? (
                       <input type="text" value={editWorkoutLog.name} onChange={(e) => setEditWorkoutLog({ ...editWorkoutLog, name: e.target.value })} />
@@ -231,8 +231,8 @@ return (
               value={'Add New Row'}></input></td>
           </tbody>
           <tbody>
-          {nutrtionLogs.map((log) => (
-                  <tr key={log.id}>
+          {Array.isArray(nutrtionLogs) && nutrtionLogs.map((log) => (
+    <tr key={log.id}>
                        <td>
                     {editNutritionLog && editNutritionLog.id === log.id ? (
                       <input type="text" value={editNutritionLog.name} onChange={(e) => setEditNutritionLog({ ...editNutritionLog, name: e.target.value })} />
