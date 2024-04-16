@@ -1,0 +1,41 @@
+.hexagon { 
+    position: relative; 
+ 
+    margin: 70px;
+    /*To Add effect on the background*/
+    background: linear-gradient(to left, 
+               DarkBlue, DodgerBlue); 
+    border-radius: 10px; 
+    width: 200px;  
+    height: 120px; 
+    box-sizing: border-box; 
+    transition: all 1s; 
+    border: 0.4vh solid transparent; 
+    border-top-color: dodgerblue; 
+    border-bottom-color: dodgerblue; 
+} 
+  
+/*To create pseudo-class */
+.hexagon:before, .hexagon:after { 
+    content: ""; 
+    border: inherit; 
+    position: absolute; 
+    top: -0.5vh; 
+    left: -0.5vh; 
+      
+    /*To Add effect on the background*/
+    background: linear-gradient(to left, 
+            DarkBlue, DodgerBlue); 
+    border-radius: inherit; 
+    height: 100%; 
+    width: 100%; 
+} 
+  
+/* Align them in such a way 
+that they form a hexagon */
+.hexagon:before { 
+    transform: rotate(60deg); 
+} 
+.hexagon:after { 
+    transform: rotate(-60deg); 
+} 
