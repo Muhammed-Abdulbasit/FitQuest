@@ -2,3 +2,10 @@
     text-align: center;
     margin-top: 10%;
 }
+
+.list-achievements{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
