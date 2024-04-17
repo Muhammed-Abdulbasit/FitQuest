@@ -20,8 +20,9 @@ const Leaderboard = () => {
   };
 
   return (
+    <div>
+      <NavBar/>
   <div className="leaderboard">
-    <NavBar/>
     <h2>Leaderboard</h2>
       <table>
         <thead>
@@ -41,6 +42,7 @@ const Leaderboard = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

@@ -27,7 +27,7 @@ export const AppRoutes = () => {
         <Route path="/LoginScreen" element={<LoginScreen onLogin={handleLogin} />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
         <Route path="/AchievementsScreen" element={<AchievementsScreen />} />
-        <Route path="/LeaderboardScreen" element={<LeaderboardScreen />} />
+        <Route path="/Leaderboard" element={<Leaderboard />} />
         <Route path="/LogScreen" element={<LogScreen />} />
         <Route path="/ProfileScreen" element={<ProfileScreen />} />
       </Routes>

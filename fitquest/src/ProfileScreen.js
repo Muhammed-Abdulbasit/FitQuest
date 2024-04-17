@@ -1,7 +1,7 @@
 // ProfileScreen.js
 import React from 'react';
 import { NavBar } from './components/NavBar';
-import './Profile.css';
+import './ProfileScreen.css';
 
 export function ProfileScreen({ user }) {
   // Ensure user data is defined before accessing its properties
