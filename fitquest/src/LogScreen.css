@@ -25,6 +25,15 @@ body{
   color: black;
 
 }
+.total{
+  font-size: large;
+  font-weight: bold;
+  color: white;
+width: fit-content;
+height: fit-content;
+background-color: black;
+margin: auto;
+}
 .log{
  
     width: 50%;

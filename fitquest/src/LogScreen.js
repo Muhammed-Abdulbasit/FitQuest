@@ -18,6 +18,8 @@ export function LogScreen() {
   const [foodDate, setFoodDate] = useState("");
   const [nutrtionLogs, setNutritionLogs] = useState([]);
   const [editNutritionLog, setEditNutritionLog] = useState(null);
+  const [totalWorkoutMinutes, setTotalWorkoutMinutes] = useState(0);
+
 
   const addWorkoutLog =()=>{
     axios.post('http://localhost:8000/workoutlog', {
@@ -117,16 +119,29 @@ const updateNutritionLog = async (id) => {
   }
 };
 
-
+const fetchTotalWorkoutMinutes = () => {
+  axios.get('http://localhost:8000/totalWorkoutMinutes')
+    .then((response) => {
+      setTotalWorkoutMinutes(response.data.totalMinutes);
+    })
+    .catch((error) => {
+      console.error('Error fetching total workout minutes:', error);
+    });
+};
 
 useEffect(() =>{
   fetchWorkoutLogs();
 fetchNutritionLogs();
+fetchTotalWorkoutMinutes();
 }, []);
 return (
   <div>
     <NavBar />
     <div className="log-screen">
+         <div className='total'>
+    <p>Total Workout Minutes: {totalWorkoutMinutes}</p>
+  </div>
+
       <h1>Workout Log</h1>
     </div>
     <div className='log'>

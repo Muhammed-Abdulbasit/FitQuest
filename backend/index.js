@@ -261,7 +261,17 @@ app.get('/user/:userId', (req, res) => {
     });
   });
 
-
+  app.get('/totalWorkoutMinutes', (req, res) => {
+    db.query('SELECT SUM(duration) AS totalMinutes FROM workout_log', (err, result) => {
+        if (err) {
+            console.error('Error calculating total workout minutes:', err);
+            res.status(500).json({ error: 'An error occurred while calculating total workout minutes' });
+        } else {
+            const totalMinutes = result[0].totalMinutes || 0;
+            res.json({ totalMinutes });
+        }
+    });
+});
 app.listen(8000, () => {
     console.log("Listening");
 });
