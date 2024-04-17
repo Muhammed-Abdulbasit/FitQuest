@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomeScreen } from './HomeScreen';
 import { ChallengeScreen } from './ChallengeScreen';
@@ -8,7 +8,8 @@ import { AchievementsScreen } from './AchievementsScreen'
 import { LeaderboardScreen } from './LeaderboardScreen'
 import { LogScreen } from './LogScreen'
 import { ProfileScreen } from './ProfileScreen'
-
+import Leaderboard from './Leaderboard';
+import Profile from './Profile';
 
 export const AppRoutes = () => {
   return (
@@ -22,6 +23,8 @@ export const AppRoutes = () => {
         <Route path="/LeaderboardScreen" element={<LeaderboardScreen />} />
         <Route path="/LogScreen" element={<LogScreen />} />
         <Route path="/ProfileScreen" element={<ProfileScreen />} />
+        <Route path="/Leaderboard" element={<Leaderboard />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </Router>
   );
