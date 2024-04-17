@@ -12,20 +12,32 @@ app.use(express.json()); // Invoke express.json as a function
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "YOUR_USER",
-    password: "YOUR_PASS", /* Change Pass */
-    database: "YOUR_DATABASE"
+    user: "root",
+    password: "ediong123", /* Change Pass */
+    database: "fitquest"
 });
 
 app.get("/", (req, res) => {
     res.json("Hello backend");
 });
 
-app.get("/users", (req, res) => {
-    const q = "SELECT * FROM users";
-    db.query(q, (err, data) => {
-        if (err) return res.json(err);
-        return res.json(data);
+// app.get("/users", (req, res) => {
+//     const q = "SELECT * FROM users";
+//     db.query(q, (err, data) => {
+//         if (err) return res.json(err);
+//         return res.json(data);
+//     });
+// });
+app.get('/users', (req, res) => {
+    db.query('SELECT * FROM users ORDER BY xp DESC', (err, data) => {
+        if (err) {
+            // Handle error
+            console.error('Error fetching users:', err);
+            res.status(500).json({ error: 'An error occurred while fetching users' });
+        } else {
+            // Send the fetched user data as a response
+            res.json(data);
+        }
     });
 });
 //********For Workout Log Table */
@@ -230,6 +242,21 @@ app.get('/user/:userId', (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching user information' });
       } else {
         res.status(200).json(result[0]); // Assuming the result is an object representing the user
+      }
+    });
+  });
+  app.get('/user', verifyJwt, (req, res) => {
+    const userId = req.userid; // Extract user ID from JWT token
+
+    db.query('SELECT * FROM users WHERE id = ?', userId, (err, result) => {
+      if (err) {
+        res.status(500).json({ error: 'An error occurred while fetching user information' });
+      } else {
+        if (result.length > 0) {
+          res.status(200).json(result[0]); // Send user information as JSON response
+        } else {
+          res.status(404).json({ error: 'User not found' });
+        }
       }
     });
   });

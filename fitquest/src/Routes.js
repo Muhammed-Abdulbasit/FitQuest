@@ -4,19 +4,27 @@ import { HomeScreen } from './HomeScreen';
 import { ChallengeScreen } from './ChallengeScreen';
 import { LoginScreen } from './LoginScreen';
 import { RegistrationScreen } from './Registration';
-import { AchievementsScreen } from './AchievementsScreen'
-import { LeaderboardScreen } from './LeaderboardScreen'
-import { LogScreen } from './LogScreen'
-import { ProfileScreen } from './ProfileScreen'
-
+import { AchievementsScreen } from './AchievementsScreen';
+import { LogScreen } from './LogScreen';
+import { ProfileScreen } from './ProfileScreen';
+import Leaderboard from './Leaderboard';
 
 export const AppRoutes = () => {
+  // Define a state to store the user data
+  const [userData, setUserData] = React.useState(null);
+
+  // Callback function to receive user data from LoginScreen
+  const handleLogin = (userData) => {
+    setUserData(userData);
+  };
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/ChallengeScreen" element={<ChallengeScreen />} />
-        <Route path="/LoginScreen" element={<LoginScreen />} />
+        {/* Pass handleLogin as a prop to LoginScreen */}
+        <Route path="/LoginScreen" element={<LoginScreen onLogin={handleLogin} />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
         <Route path="/AchievementsScreen" element={<AchievementsScreen />} />
         <Route path="/LeaderboardScreen" element={<LeaderboardScreen />} />

@@ -1,0 +1,49 @@
+.leaderboard {
+    width: 100%;
+    max-width: 600px; /* Adjust the max-width as needed */
+    margin: 0 auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  thead th {
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  tbody td {
+    padding: 10px 12px;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #575757;
+  }
+  tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  th, td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th:first-child,
+  td:first-child {
+    border-left: 1px solid #ddd;
+  }
+  
+  th:last-child,
+  td:last-child {
+    border-right: 1px solid #ddd;
+  }

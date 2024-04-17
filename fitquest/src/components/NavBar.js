@@ -16,7 +16,7 @@ export function NavBar() {
           <li><Link to='/'>Home</Link></li>
           <li><Link to='/ChallengeScreen'>Challenges</Link></li>
           <li><Link to='/AchievementsScreen'>Achievements</Link></li>
-          <li><Link to='/LeaderboardScreen'>Leaderboard</Link></li>
+          <li><Link to='/Leaderboard'>Leaderboard</Link></li>
           <li><Link to='/LogScreen'>Log</Link></li>
           <li><Link to='/LoginScreen'>Login</Link></li>
           
