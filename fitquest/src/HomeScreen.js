@@ -2,7 +2,7 @@ import './HomeScreen.css';
 import { NavBar } from './components/NavBar';
 import WorkoutCard from './components/WorkoutsCard';
 import squat from './images/barbell_squat.avif'
-import running from "./images/running.png"
+import running from './images/running.png'
 
 export function HomeScreen() {
   return (

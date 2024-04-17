@@ -30,3 +30,16 @@
 .navbar li {
     color: white;
 }
+
+.profile-icon {
+    cursor: pointer;
+    color: white;
+    border-radius: 50%;
+}
+
+.profile-icon img {
+    width: 25px; 
+    height: 25px; 
+    border-radius: 50%;
+    border: 0.5px solid; 
+}

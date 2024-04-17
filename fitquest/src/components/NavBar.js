@@ -1,6 +1,8 @@
 import './NavBar.css';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProfileDropdown from './ProfileDropdown';
+import running from '../images/running.png';
 
 export function NavBar() {
   const [isLinkDropdownOpen, setIsLinkDropdownOpen] = useState(false);
@@ -19,8 +21,12 @@ export function NavBar() {
           <li><Link to='/LeaderboardScreen'>Leaderboard</Link></li>
           <li><Link to='/LogScreen'>Log</Link></li>
           <li><Link to='/LoginScreen'>Login</Link></li>
+          {/* <li><Link to='/ProfileScreen'>Profile</Link></li> */}
           
-          <li><div onClick={toggleDropdown}>Profile</div></li>
+          <li><div className="profile-icon" onClick={toggleDropdown}>
+              <img src={running} alt='Profile Icon' />
+              {isLinkDropdownOpen && <ProfileDropdown />}
+              </div></li>
         </ul>
       </div>
     </div>
