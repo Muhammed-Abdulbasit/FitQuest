@@ -2,18 +2,26 @@ import './ChallengeScreen.css';
 import { NavBar } from './components/NavBar';
 import ChallengeCard from './components/ChallengeCard';
 import treadmill from './images/treadmill.png'
-import { jwtDecode } from 'jwt-decode';
-import { useEffect, useState } from 'react';
 
+import { useEffect, useState } from 'react';
+import  axios from 'axios';
 export function ChallengeScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [challenges, setChallenges] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      const decoded = jwtDecode(token);
+     
       setIsLoggedIn(true);
     }
+    axios.get('http://localhost:8000/challenges')
+      .then(response => {
+        setChallenges(response.data); // Assuming the response data is an array of challenges
+      })
+      .catch(error => {
+        console.error('Error fetching challenges:', error);
+      });
+
   }, []);
   return (
     <div>
@@ -21,15 +29,15 @@ export function ChallengeScreen() {
         <div className="challenge-screen">
         <h2 id='challenges-message'>This Weeks Challenges</h2>
           <div className='challenge-screen-cards'>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            <ChallengeCard title="Running" xp= "25 xp" desc="Run or jog for 30 minutes outdoors or on a treadmill. Or Both!" img={treadmill}/>
-            
+          {challenges.map(challenge => (
+        <ChallengeCard
+          title={challenge.name}
+          desc={challenge.info}
+          xp={challenge.xp_val}
+          img={treadmill}
+        />
+      ))}
+         
           </div>
         </div>
     </div>

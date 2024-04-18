@@ -194,23 +194,6 @@ app.post("/login", (req, res) => {
 });
 
 
-app.get('/checkauth',verifyJwt ,(req, res)=>{
-    return res.json("Authenticated")
-})
-app.get('/user', verifyJwt, (req, res) => {
-    // Assuming req.userid contains the user ID extracted from the JWT token
-    const userId = req.userid;
-    
-    // Query the database to fetch user information based on the user ID
-    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        // Assuming the result is an object representing the user
-        res.status(200).json(result[0]);
-      }
-    });
-  });
 app.post("/register", (req, res) => {
     const Name = req.body.Name;
     const email = req.body.email;
@@ -246,37 +229,23 @@ app.post("/register", (req, res) => {
         });
 });
 
+// Fetches and Displays all challenges to the Challenges Screen
+app.get("/challenges", (req,res)=>{
+const q = 'SELECT * FROM challenges ORDER BY xp_val ASC';
 
-
-// Assuming you have a GET endpoint to retrieve user information
-app.get('/user/:userId', (req, res) => {
-    const userId = req.params.userId;
-    // Query the database for user information based on userId
-    // Replace this with your database query logic
-    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        res.status(200).json(result[0]); // Assuming the result is an object representing the user
+db.query(q,(err, results)=>{
+    if (err){
+        res.status(500).json({error: 'An error occured while fetching challenges'});
+    }
+    else{
+        res.json(results);
       }
-    });
-  });
-  app.get('/user', verifyJwt, (req, res) => {
-    const userId = req.userid; // Extract user ID from JWT token
+})
+})
 
-    db.query('SELECT * FROM users WHERE id = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        if (result.length > 0) {
-          res.status(200).json(result[0]); // Send user information as JSON response
-        } else {
-          res.status(404).json({ error: 'User not found' });
-        }
-      }
-    });
-  });
 
+
+  //Totals all the minutes from a workout log and displays it
   app.get('/totalWorkoutMinutes', (req, res) => {
     db.query('SELECT SUM(duration) AS totalMinutes FROM workout_log', (err, result) => {
         if (err) {
