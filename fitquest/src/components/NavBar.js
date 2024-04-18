@@ -1,11 +1,12 @@
 import './NavBar.css';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProfileDropdown from './ProfileDropdown';
-import running from '../images/running.png';
+import Logo from '../images/Logo.webp';
 
 export function NavBar() {
   const [isLinkDropdownOpen, setIsLinkDropdownOpen] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const toggleDropdown = () => {
     setIsLinkDropdownOpen(!isLinkDropdownOpen);
@@ -15,16 +16,14 @@ export function NavBar() {
     <div>
       <div className="navbar">
         <ul>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to='/ChallengeScreen'>Challenges</Link></li>
-          <li><Link to='/AchievementsScreen'>Achievements</Link></li>
-          <li><Link to='/Leaderboard'>Leaderboard</Link></li>
-          <li><Link to='/LogScreen'>Log</Link></li>
-          <li><Link to='/LoginScreen'>Login</Link></li>
-          {/* <li><Link to='/ProfileScreen'>Profile</Link></li> */}
+          <li><button onClick={() => navigate('/HomeScreen')}>Home</button></li>
+          <li><button onClick={() => navigate('/ChallengeScreen')}>Challenges</button></li>
+          <li><button onClick={() => navigate('/AchievementsScreen')}>Achievements</button></li>
+          <li><button onClick={() => navigate('/Leaderboard')}>Leaderboard</button></li>
+          <li><button onClick={() => navigate('/LogScreen')}>Log</button></li>
           
           <li><div className="profile-icon" onClick={toggleDropdown}>
-              <img src={running} alt='Profile Icon' />
+              <img src={Logo} alt='Profile Icon' />
               {isLinkDropdownOpen && <ProfileDropdown />}
               </div></li>
         </ul>

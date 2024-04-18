@@ -31,7 +31,7 @@ export function LoginScreen() {
   }
 
   if (isLoggedIn) {
-    return <Navigate to="/ProfileScreen"/>;
+    return <Navigate to="/HomeScreen"/>;
 
   }
 
@@ -46,7 +46,6 @@ export function LoginScreen() {
 
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn} />
       <div className="LoginScreen">
         <div>
           <h1>Welcome to FitQuest</h1>

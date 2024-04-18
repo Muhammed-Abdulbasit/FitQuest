@@ -33,7 +33,16 @@
     background-color: #f9f9f9;
   }
   tbody tr:nth-child(odd) {
-    background-color: #575757;
+    background-color: #e4e4e4;
+  }
+  .leaderboard tbody tr:nth-child(1) {
+    background-color: #FFD700; /* Gold */
+  }
+  .leaderboard tbody tr:nth-child(2) {
+    background-color: #C0C0C0; /* Silver */
+  }
+  .leaderboard tbody tr:nth-child(3) {
+    background-color: #CD7F32; /* Bronze */
   }
   tbody tr:hover {
     background-color: #e0e0e0;

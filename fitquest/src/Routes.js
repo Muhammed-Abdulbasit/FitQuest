@@ -21,14 +21,14 @@ export const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/" element={<LoginScreen />} />
         <Route path="/ChallengeScreen" element={<ChallengeScreen />} />
         {/* Pass handleLogin as a prop to LoginScreen */}
-        <Route path="/LoginScreen" element={<LoginScreen onLogin={handleLogin} />} />
+        <Route path="/LogScreen" element={<LogScreen onLogin={handleLogin} />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
         <Route path="/AchievementsScreen" element={<AchievementsScreen />} />
         <Route path="/Leaderboard" element={<Leaderboard />} />
-        <Route path="/LogScreen" element={<LogScreen />} />
+        <Route path="/HomeScreen" element={<HomeScreen />} />
         <Route path="/ProfileScreen" element={<ProfileScreen />} />
       </Routes>
     </Router>
