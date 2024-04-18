@@ -175,7 +175,7 @@ app.post("/login", (req, res) => {
                 return;
             }
             if (result.length > 0) {
-             const id = result[0].id;
+             const id = result[0].userid;
              const name = result[0].name;
              const username = result[0].username;
              const gender = result[0].gender;
@@ -185,7 +185,7 @@ app.post("/login", (req, res) => {
              const xp = result[0].xp;
                  // Assuming the user's name is stored in the 'name' column
                 const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
-
+             
                 res.json({ Login: true, token, id, name, email });
             } else {
                 res.status(401).send({ message: "Wrong username/password" });
@@ -223,7 +223,9 @@ app.post("/register", (req, res) => {
                 const xp = result[0].xp;
                     // Assuming the user's name is stored in the 'name' column
                    const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
-            res.json({token});
+            
+            
+                   res.json({token});
                 }
             return res.json({ message: "Successfully Registered" });
         });
@@ -243,6 +245,24 @@ db.query(q,(err, results)=>{
 })
 })
 
+app.put('/updateUserXP/:userId/:challengeXp', (req, res) => {
+    const userId = req.params.userId;
+    const challengeXp = req.params.challengeXp;
+
+    // Update user's XP in the users table
+    db.query(
+        'UPDATE users SET xp = xp + ? WHERE userid = ?',
+        [challengeXp, userId],
+        (err, result) => {
+            if (err) {
+                console.error('Error updating user XP:', err);
+                return res.status(500).json({ message: 'An error occurred while updating user XP' });
+            }
+            console.log('User XP updated successfully');
+            return res.json({ message: 'User XP updated successfully' });
+        }
+    );
+});
 
 
   //Totals all the minutes from a workout log and displays it

@@ -28,6 +28,7 @@ export function ChallengeScreen() {
         <NavBar isLoggedIn={isLoggedIn}/>
         <div className="challenge-screen">
         <h2 id='challenges-message'>This Weeks Challenges</h2>
+        <h5>Click On A challenge Once You Complete It</h5>
           <div className='challenge-screen-cards'>
           {challenges.map(challenge => (
         <ChallengeCard
