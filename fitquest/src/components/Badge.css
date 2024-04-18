@@ -1,41 +1,57 @@
-.hexagon { 
-    position: relative; 
- 
+.hexagon {
+    position: relative;
     margin: 70px;
-    /*To Add effect on the background*/
-    background: linear-gradient(to left, 
-               DarkBlue, DodgerBlue); 
-    border-radius: 10px; 
-    width: 200px;  
-    height: 120px; 
-    box-sizing: border-box; 
-    transition: all 1s; 
-    border: 0.4vh solid transparent; 
-    border-top-color: dodgerblue; 
-    border-bottom-color: dodgerblue; 
-} 
+    background: linear-gradient(to left, DarkBlue, DodgerBlue);
+    border-radius: 10px;
+    width: 200px;
+    height: 120px;
+    box-sizing: border-box;
+    transition: all 1s;
+    border: 0.4vh solid transparent;
+    border-top-color: dodgerblue;
+    border-bottom-color: dodgerblue;
+  }
   
-/*To create pseudo-class */
-.hexagon:before, .hexagon:after { 
-    content: ""; 
-    border: inherit; 
-    position: absolute; 
-    top: -0.5vh; 
-    left: -0.5vh; 
-      
-    /*To Add effect on the background*/
-    background: linear-gradient(to left, 
-            DarkBlue, DodgerBlue); 
-    border-radius: inherit; 
-    height: 100%; 
-    width: 100%; 
-} 
+  /* Pseudo-elements to create the hexagon shape */
+  .hexagon:before,
+  .hexagon:after {
+    content: "";
+    border: inherit;
+    position: absolute;
+    top: -0.5vh;
+    left: -0.5vh;
+    background: linear-gradient(to left, DarkBlue, DodgerBlue);
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+  }
   
-/* Align them in such a way 
-that they form a hexagon */
-.hexagon:before { 
-    transform: rotate(60deg); 
-} 
-.hexagon:after { 
-    transform: rotate(-60deg); 
-} 
+  /* Rotate pseudo-elements to form the hexagon shape */
+  .hexagon:before {
+    transform: rotate(60deg);
+  } 
+   .hexagon:after {
+    transform: rotate(-60deg);
+  }
+  
+  /* Styling for h3 and p elements inside hexagon */
+  .hexagon h3,
+  .hexagon p {
+
+    z-index: 3;
+    color: white;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+  }
+  
+  .hexagon h3 {
+    top: -10px; /* Adjust as needed */
+  }
+  
+  .hexagon p {
+    bottom: 30px; /* Adjust as needed */
+  }
+  

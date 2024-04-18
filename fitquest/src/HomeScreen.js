@@ -23,7 +23,7 @@ export function HomeScreen() {
         <h3>We recommend these workouts for you</h3>
         <div className='homescreen-cards'>
           <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs" img={squat}/>
-          <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs" img={running}/>
+          <WorkoutCard title="Running" desc="Treadmill Runnuing is a great way to improve stamina" img={running}/>
           <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs" img={squat}/>
           <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs" img={squat}/>
         </div>

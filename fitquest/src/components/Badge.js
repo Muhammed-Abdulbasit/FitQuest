@@ -1,8 +1,11 @@
 import './Badge.css'
 
-const Achievement = () => {
+const Achievement = ({name, description}) => {
     return (
-      <div className="hexagon"></div>
+      <div className="hexagon">
+      <h3>{name}</h3>
+      <p>{description}</p>
+      </div>
     );
   }
   

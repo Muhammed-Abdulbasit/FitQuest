@@ -16,7 +16,21 @@ const db = mysql.createConnection({
     password: "ediong123", /* Change Pass */
     database: "fitquest"
 });
-
+const verifyJwt = (req,res,next) =>{
+    const token = req.headers["access-token"];
+    if(!token){
+        return res.json('Need a token');
+    }else{
+        jwt.verify(token,"jwtSecertKey", (err, decoded)=>{
+            if(err){
+                res.json("Not Authentificated")
+            }else{
+                req.userid = decoded.id;
+                next();
+            }
+        } )
+    }
+}
 app.get("/", (req, res) => {
     res.json("Hello backend");
 });
@@ -148,9 +162,7 @@ app.put('/nutritionlog/:id', async (req, res) => {
         }
     );
 });
-var id;
-var name ;
-var username;
+
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -163,9 +175,9 @@ app.post("/login", (req, res) => {
                 return;
             }
             if (result.length > 0) {
-             id = result[0].id;
-             name = result[0].name;
-             username = result[0].username;
+             const id = result[0].id;
+             const name = result[0].name;
+             const username = result[0].username;
              const gender = result[0].gender;
              const height = result[0].height;
              const weight = result[0].weight;
@@ -174,28 +186,14 @@ app.post("/login", (req, res) => {
                  // Assuming the user's name is stored in the 'name' column
                 const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
 
-                res.json({ Login: true, token, name, email });
+                res.json({ Login: true, token, id, name, email });
             } else {
                 res.status(401).send({ message: "Wrong username/password" });
             }
         });
 });
 
-const verifyJwt = (req,res,next) =>{
-    const token = req.headers["access-token"];
-    if(!token){
-        return res.json('Need a token');
-    }else{
-        jwt.verify(token,"jwtSecertKey", (err, decoded)=>{
-            if(err){
-                res.json("Not Authentificated")
-            }else{
-                req.userid = decoded.id;
-                next();
-            }
-        } )
-    }
-}
+
 app.get('/checkauth',verifyJwt ,(req, res)=>{
     return res.json("Authenticated")
 })
