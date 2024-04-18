@@ -8,16 +8,18 @@ import { jwtDecode } from "jwt-decode";
 
 export function HomeScreen() {
   const [user, setUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
+      setIsLoggedIn(true);
       const decoded = jwtDecode(token);
       setUser(decoded);
     }
   }, []);
   return (
     <div>
-        <NavBar/>
+        <NavBar isLoggedIn={isLoggedIn}/>
       <div className="homescreen">
         <h1 id='welcome-message'>Welcome, {user.name}</h1>
         <h3>We recommend these workouts for you</h3>

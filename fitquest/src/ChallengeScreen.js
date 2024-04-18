@@ -2,11 +2,22 @@ import './ChallengeScreen.css';
 import { NavBar } from './components/NavBar';
 import ChallengeCard from './components/ChallengeCard';
 import treadmill from './images/treadmill.png'
+import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from 'react';
 
 export function ChallengeScreen() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      setIsLoggedIn(true);
+    }
+  }, []);
   return (
     <div>
-        <NavBar/>
+        <NavBar isLoggedIn={isLoggedIn}/>
         <div className="challenge-screen">
         <h2 id='challenges-message'>This Weeks Challenges</h2>
           <div className='challenge-screen-cards'>

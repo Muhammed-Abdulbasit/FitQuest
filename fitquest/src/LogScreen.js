@@ -2,6 +2,7 @@ import { NavBar } from './components/NavBar';
 import React, { useState, useEffect } from 'react';
 import './LogScreen.css'
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 
 export function LogScreen() {
@@ -19,7 +20,7 @@ export function LogScreen() {
   const [nutrtionLogs, setNutritionLogs] = useState([]);
   const [editNutritionLog, setEditNutritionLog] = useState(null);
   const [totalWorkoutMinutes, setTotalWorkoutMinutes] = useState(0);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const addWorkoutLog =()=>{
     axios.post('http://localhost:8000/workoutlog', {
@@ -130,13 +131,19 @@ const fetchTotalWorkoutMinutes = () => {
 };
 
 useEffect(() =>{
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decoded = jwtDecode(token);
+    setIsLoggedIn(true);
+  }
   fetchWorkoutLogs();
 fetchNutritionLogs();
 fetchTotalWorkoutMinutes();
 }, []);
+
 return (
   <div>
-    <NavBar />
+    <NavBar isLoggedIn={isLoggedIn} />
     <div className="log-screen">
          <div className='total'>
     <p>Total Workout Minutes: {totalWorkoutMinutes}</p>

@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import ProfileDropdown from './ProfileDropdown';
 import running from '../images/running.png';
 
-export function NavBar() {
+export function NavBar({ isLoggedIn }) {
   const [isLinkDropdownOpen, setIsLinkDropdownOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsLinkDropdownOpen(!isLinkDropdownOpen);
   };
@@ -20,13 +19,17 @@ export function NavBar() {
           <li><Link to='/AchievementsScreen'>Achievements</Link></li>
           <li><Link to='/Leaderboard'>Leaderboard</Link></li>
           <li><Link to='/LogScreen'>Log</Link></li>
-          <li><Link to='/LoginScreen'>Login</Link></li>
-          {/* <li><Link to='/ProfileScreen'>Profile</Link></li> */}
-          
-          <li><div className="profile-icon" onClick={toggleDropdown}>
-              <img src={running} alt='Profile Icon' />
-              {isLinkDropdownOpen && <ProfileDropdown />}
-              </div></li>
+          {isLoggedIn ? (
+            <> <li><div className="profile-icon" onClick={toggleDropdown}>
+            <img src={running} alt='Profile Icon' />
+            {isLinkDropdownOpen && <ProfileDropdown />}
+            </div></li>
+            </>
+          ) : (
+            <li><Link to='/LoginScreen'>Login</Link></li>
+          )}
+
+         
         </ul>
       </div>
     </div>
