@@ -25,7 +25,7 @@ const register =()=>{
     }
 
     axios.post('http://localhost:8000/register', {
-        Name: nameReg,
+        name: nameReg,
         email: emailReg,
         username: usernameReg ,
         password: passwordReg,
@@ -34,6 +34,7 @@ const register =()=>{
         height: heightReg,
         weight: weightReg
     }).then((response) => {
+        localStorage.setItem("token", response.data.token)
         setSignUp(true);
         console.log(response);
     }).catch((error) => {
@@ -48,7 +49,7 @@ if(SignedUp){
 
     return (
         <div>
-            <NavBar />
+            
             <div className="RegistrationScreen">
                 <div>
                 <h1>Welcome to FitQuest</h1>
@@ -65,14 +66,17 @@ if(SignedUp){
                     Gender:<input type='radio' name='gselect' className='gender' value="M" onChange={(e)=>{setGender(e.target.value)}} />M 
                     <input type='radio' name='gselect' className='gender' value={"F"} onChange={(e)=>{setGender(e.target.value)}} />F 
                     <br></br><br></br>
-                    Height<br></br> <input type='number' placeholder='Enter Height in Ft' name='height' onChange={(e)=>{setHeight(e.target.value)}} /><br></br>
+                    Height<br></br> <input type='number' placeholder='Enter Height in Ft' width={100} name='height' onChange={(e)=>{setHeight(e.target.value)}} /><br></br>
                     Weight<br></br> <input type='number' placeholder='Enter Height in Ib' name='weight'onChange={(e)=>{setWeight(e.target.value)}} /><br></br>
                     </div>
                     <button className='logbtn' onClick={register} >SignUp</button> Already have an account? <Link to='/LoginScreen'>Login</Link>
 
                 
             </div>
+            <div className='status'>
             <h1>{SignUpStatus}</h1>
+            </div>
+            
         </div>
         
     );

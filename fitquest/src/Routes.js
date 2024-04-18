@@ -30,6 +30,7 @@ export const AppRoutes = () => {
         <Route path="/Leaderboard" element={<Leaderboard />} />
         <Route path="/HomeScreen" element={<HomeScreen />} />
         <Route path="/ProfileScreen" element={<ProfileScreen />} />
+        <Route path='/LoginScreen' element={<LoginScreen/>} />
       </Routes>
     </Router>
   );

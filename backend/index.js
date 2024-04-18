@@ -162,7 +162,6 @@ app.put('/nutritionlog/:id', async (req, res) => {
         }
     );
 });
-
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -211,71 +210,28 @@ app.get('/user', verifyJwt, (req, res) => {
       }
     });
   });
-app.post("/register", (req, res) => {
-    const Name = req.body.Name;
-    const email = req.body.email;
-    const username = req.body.username;
-    const password = req.body.password;
-    const birth = req.body.birth;
-    const gender = req.body.gender;
-    const height = req.body.height;
-    const weight = req.body.weight;
-
-
+  app.post("/register", (req, res) => {
+    const { name, email, username, password, birth, gender, height, weight } = req.body;
 
     db.query("INSERT INTO users (name, email, username, password, DOB, gender, height, weight) VALUES (?,?,?,?,?,?,?,?)",
-        [Name, email, username, password, birth, gender, height, weight],
+        [name, email, username, password, birth, gender, height, weight],
         (err, result) => {
             if (err) {
-                console.error(err);
+                console.error("Error registering user:", err);
+                return res.status(500).json({ message: "An error occurred while registering" });
             }
-            if (result.length > 0) {
-                id = result[0].id;
-                name = result[0].name;
-                username = result[0].username;
-                const gender = result[0].gender;
-                const height = result[0].height;
-                const weight = result[0].weight;
-                const dob = result[0].DOB;
-                const xp = result[0].xp;
-                    // Assuming the user's name is stored in the 'name' column
-                   const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
-            res.json({token});
-                }
-            return res.json({ message: "Successfully Registered" });
-        });
-});
 
-
-
-// Assuming you have a GET endpoint to retrieve user information
-app.get('/user/:userId', (req, res) => {
-    const userId = req.params.userId;
-    // Query the database for user information based on userId
-    // Replace this with your database query logic
-    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        res.status(200).json(result[0]); // Assuming the result is an object representing the user
-      }
-    });
-  });
-  app.get('/user', verifyJwt, (req, res) => {
-    const userId = req.userid; // Extract user ID from JWT token
-
-    db.query('SELECT * FROM users WHERE id = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        if (result.length > 0) {
-          res.status(200).json(result[0]); // Send user information as JSON response
-        } else {
-          res.status(404).json({ error: 'User not found' });
+            if (result.affectedRows > 0) {
+                const id = result.insertId;
+                const xp = 0; // Assuming initial XP is 0
+                const token = jwt.sign({ id, name, email, username, gender, height, weight, birth, xp },"jwtSecertKey", { expiresIn: '1h' });
+                return res.json({ token });
+            } else {
+                return res.status(400).json({ message: "Registration failed" });
+            }
         }
-      }
-    });
-  });
+    );
+});
 
   app.get('/totalWorkoutMinutes', (req, res) => {
     db.query('SELECT SUM(duration) AS totalMinutes FROM workout_log', (err, result) => {

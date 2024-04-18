@@ -1,7 +1,7 @@
 .RegistrationScreen {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 48%;
     transform: translate(-50%, -50%);
     text-align: center;
     background-color: rgb(171, 170, 170);
@@ -10,7 +10,11 @@
     z-index: -1;
 }
 
+.status{
+    position: absolute;
+    left: 40%;
 
+}
 .gender{
     margin: 0;
     width: 5%;
