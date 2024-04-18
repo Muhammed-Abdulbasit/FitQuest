@@ -20,14 +20,7 @@ const db = mysql.createConnection({
 app.get("/", (req, res) => {
     res.json("Hello backend");
 });
-
-// app.get("/users", (req, res) => {
-//     const q = "SELECT * FROM users";
-//     db.query(q, (err, data) => {
-//         if (err) return res.json(err);
-//         return res.json(data);
-//     });
-// });
+// Orders the leaderboard based on XP
 app.get('/users', (req, res) => {
     db.query('SELECT * FROM users ORDER BY xp DESC', (err, data) => {
         if (err) {
@@ -79,6 +72,7 @@ if(err) return res.json(err);
     }
     )
 });
+// Editing a workout log
 app.put('/workoutlog/:id', (req, res) => {
     const id = req.params.id;
     const { name, duration, type, date } = req.body;
@@ -154,7 +148,9 @@ app.put('/nutritionlog/:id', async (req, res) => {
         }
     );
 });
-
+var id;
+var name ;
+var username;
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -167,15 +163,24 @@ app.post("/login", (req, res) => {
                 return;
             }
             if (result.length > 0) {
-                const id = result[0].id;
-const token = jwt.sign({id}, "jwtSecertKey", {expiresIn: 300});
+             id = result[0].id;
+             name = result[0].name;
+             username = result[0].username;
+             const gender = result[0].gender;
+             const height = result[0].height;
+             const weight = result[0].weight;
+             const dob = result[0].DOB;
+             const xp = result[0].xp;
+                 // Assuming the user's name is stored in the 'name' column
+                const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
 
-               res.json({Login: true, token, result});
+                res.json({ Login: true, token, name, email });
             } else {
                 res.status(401).send({ message: "Wrong username/password" });
             }
         });
 });
+
 const verifyJwt = (req,res,next) =>{
     const token = req.headers["access-token"];
     if(!token){
@@ -226,6 +231,19 @@ app.post("/register", (req, res) => {
             if (err) {
                 console.error(err);
             }
+            if (result.length > 0) {
+                id = result[0].id;
+                name = result[0].name;
+                username = result[0].username;
+                const gender = result[0].gender;
+                const height = result[0].height;
+                const weight = result[0].weight;
+                const dob = result[0].DOB;
+                const xp = result[0].xp;
+                    // Assuming the user's name is stored in the 'name' column
+                   const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
+            res.json({token});
+                }
             return res.json({ message: "Successfully Registered" });
         });
 });

@@ -1,31 +1,33 @@
 // ProfileScreen.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 import { NavBar } from './components/NavBar';
 import './ProfileScreen.css';
 
-export function ProfileScreen({ user }) {
-  // Ensure user data is defined before accessing its properties
-  if (!user) {
-    return <div>Loading user profile...</div>;
-  }
+export function ProfileScreen() {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUser(decoded);
+    }
+  }, []);
 
   return (
     <div>
-      <NavBar />
-      <div className="profile">
-        <h2>User Profile</h2>
-        <div className="profile-info">
-          <div>
-            <label>Name:</label>
-            <span>{user.name}</span>
-          </div>
-          <div>
-            <label>Email:</label>
-            <span>{user.email}</span>
-          </div>
-          {/* Add more profile information here */}
-        </div>
-      </div>
+    <NavBar />
+    <div className="ProfileScreen">
+      <h1>Welcome, {user.name}</h1>
+      <p>Email: {user.email}</p>
+      <p>Username: {user.username}</p>
+      <p>Height: {user.height} feet</p>
+      <p>Username: {user.weight} pounds</p>
+      <p>Date Of Birth: {user.dob}</p>
+      <p>Current XP: {user.xp} points</p>
+    
+    </div>
     </div>
   );
 }

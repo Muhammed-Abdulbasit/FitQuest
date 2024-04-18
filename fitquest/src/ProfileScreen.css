@@ -1,4 +1,38 @@
-.profile-screen{
+.ProfileScreen {
     text-align: center;
     margin-top: 10%;
-}
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px; /* Limit the width to improve readability */
+    padding: 20px;
+    border: 2px solid #ccc; /* Add a border for visual separation */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: #f9f9f9; /* Set background color */
+  }
+  
+  .ProfileScreen h1 {
+    font-size: 32px; /* Increase font size for the heading */
+    margin-bottom: 20px; /* Add some space below the heading */
+  }
+  
+  .ProfileScreen p {
+    font-size: 18px; /* Set font size for paragraphs */
+    margin-bottom: 10px; /* Add some space between paragraphs */
+  }
+  
+  .ProfileScreen button {
+    padding: 10px 20px; /* Add padding to the button */
+    font-size: 16px; /* Set font size for the button text */
+    background-color: #007bff; /* Set background color */
+    color: #fff; /* Set text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Add pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Add transition effect */
+  }
+  
+  .ProfileScreen button:hover {
+    background-color: #0056b3; /* Darken the background color on hover */
+  }
+  

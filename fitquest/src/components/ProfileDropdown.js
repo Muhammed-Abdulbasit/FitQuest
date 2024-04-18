@@ -6,7 +6,7 @@ const ProfileDropdown = () => {
   return (
     <div className="profile-dropdown">
       <Link id= 'profile-dropdown-link' to="/ProfileScreen">Profile</Link>
-      <Link id = 'profile-dropdown-link' to="/LoginScreen">Logout</Link>
+      <Link id = 'profile-dropdown-link' to="/LoginScreen" onClick={() => localStorage.removeItem('token')}>Logout</Link>
     </div>
   );
 };
