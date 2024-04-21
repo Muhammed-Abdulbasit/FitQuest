@@ -2,6 +2,7 @@ import { NavBar } from './components/NavBar';
 import React, { useState, useEffect } from 'react';
 import './LogScreen.css'
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 
 export function LogScreen() {
@@ -19,22 +20,30 @@ export function LogScreen() {
   const [nutrtionLogs, setNutritionLogs] = useState([]);
   const [editNutritionLog, setEditNutritionLog] = useState(null);
   const [totalWorkoutMinutes, setTotalWorkoutMinutes] = useState(0);
-
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState('');
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id);
+    }
+}, []);
   const addWorkoutLog =()=>{
     axios.post('http://localhost:8000/workoutlog', {
         name: workoutName,
         duration: workoutTime,
         type: workoutType,
-        date: workoutDate
+        date: workoutDate,
+        userid: userId
     }).then((response) => {
         console.log(response);
         fetchWorkoutLogs();
     }).catch((error) => {
-        // Handle registration failure
         console.error('Error Inputting:', error);
     });
 }
+
 const fetchWorkoutLogs = () => {
   axios.get('http://localhost:8000/workoutlog')
     .then((response) => {
@@ -71,20 +80,22 @@ const deleteWorkoutLog = async (id) => {
 };
 
 const addNutritionLog = () =>{
-axios.post("http://localhost:8000/nutritionlog",{
-name: foodName,
-calorie: calorie,
-carbs : carb,
-protein: protein,
-date: foodDate
-}).then((response) => {
-  console.log(response);
-  fetchNutritionLogs();
-}).catch((error) => {
-  // Handle registration failure
-  console.error('Error Inputting:', error);
-});
-}
+  axios.post("http://localhost:8000/nutritionlog",{
+  name: foodName,
+  calorie: calorie,
+  carbs : carb,
+  protein: protein,
+  date: foodDate,
+  userid : userId
+  }).then((response) => {
+    console.log(response);
+    fetchNutritionLogs();
+  }).catch((error) => {
+    // Handle registration failure
+    console.error('Error Inputting:', error);
+  });
+  }
+
 const fetchNutritionLogs = () => {
   axios.get('http://localhost:8000/nutritionlog')
     .then((response) => {
@@ -130,13 +141,20 @@ const fetchTotalWorkoutMinutes = () => {
 };
 
 useEffect(() =>{
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decoded = jwtDecode(token);
+    const userId = decoded.id;
+    setIsLoggedIn(true);
+    fetchNutritionLogs(userId);
+    setUserId(decoded.id);
   fetchWorkoutLogs();
-fetchNutritionLogs();
 fetchTotalWorkoutMinutes();
-}, []);
+}}, []);
+
 return (
   <div>
-    <NavBar />
+    <NavBar isLoggedIn={isLoggedIn} />
     <div className="log-screen">
          <div className='total'>
     <p>Total Workout Minutes: {totalWorkoutMinutes}</p>

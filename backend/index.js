@@ -16,21 +16,7 @@ const db = mysql.createConnection({
     password: "ediong123", /* Change Pass */
     database: "fitquest"
 });
-const verifyJwt = (req,res,next) =>{
-    const token = req.headers["access-token"];
-    if(!token){
-        return res.json('Need a token');
-    }else{
-        jwt.verify(token,"jwtSecertKey", (err, decoded)=>{
-            if(err){
-                res.json("Not Authentificated")
-            }else{
-                req.userid = decoded.id;
-                next();
-            }
-        } )
-    }
-}
+
 app.get("/", (req, res) => {
     res.json("Hello backend");
 });
@@ -48,22 +34,25 @@ app.get('/users', (req, res) => {
     });
 });
 //********For Workout Log Table */
-app.post("/workoutlog", (req,res)=>{
+app.post("/workoutlog", (req, res) => {
     const name = req.body.name;
     const duration = req.body.duration;
     const type = req.body.type;
-    const date =req.body.date;
+    const date = req.body.date;
+    const userid = req.body.userid
 
-    db.query("INSERT INTO workout_log(name,duration,type,date) VALUES(?,?,?,?)",
-    [name, duration, type, date],
+    db.query(
+        "INSERT INTO workout_log(name, duration, type, date, userid) VALUES(?, ?, ?, ?, ?)",
+        [name, duration, type, date, userid],
     (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: "An error occurred while entering data" });
         }
-        console.log("Data Entered")
+            console.log("Data Entered");
         return res.json({ result });
-    });
+        }
+    );
 });
 
 //General for Now
@@ -105,16 +94,15 @@ app.put('/workoutlog/:id', (req, res) => {
     );
 });
 
-
 app.post("/nutritionlog", (req,res)=>{
     const name = req.body.name;
     const calorie = req.body.calorie;
     const protein = req.body.protein;
     const carbs = req.body.carbs;
     const date =req.body.date;
-
-    db.query("INSERT INTO nutrition_log(name,calories,protein,carbohydrates,date) VALUES(?,?,?,?,?)",
-    [name, calorie, protein,carbs, date],
+    const userid = req.body.userid
+    db.query("INSERT INTO nutrition_log(name,calories,protein,carbohydrates,date, userid) VALUES(?,?,?,?,?,?)",
+    [name, calorie, protein,carbs, date, userid],
     (err, result) => {
         if (err) {
             console.error(err);
@@ -124,6 +112,7 @@ app.post("/nutritionlog", (req,res)=>{
         return res.json({ result });
     });
 });
+
 
 //General for Now
 app.get("/nutritionlog", (req, res) => {
@@ -174,7 +163,7 @@ app.post("/login", (req, res) => {
                 return;
             }
             if (result.length > 0) {
-             const id = result[0].id;
+             const id = result[0].userid;
              const name = result[0].name;
              const username = result[0].username;
              const gender = result[0].gender;
@@ -184,7 +173,7 @@ app.post("/login", (req, res) => {
              const xp = result[0].xp;
                  // Assuming the user's name is stored in the 'name' column
                 const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
-
+             
                 res.json({ Login: true, token, id, name, email });
             } else {
                 res.status(401).send({ message: "Wrong username/password" });
@@ -193,46 +182,78 @@ app.post("/login", (req, res) => {
 });
 
 
-app.get('/checkauth',verifyJwt ,(req, res)=>{
-    return res.json("Authenticated")
-})
-app.get('/user', verifyJwt, (req, res) => {
-    // Assuming req.userid contains the user ID extracted from the JWT token
-    const userId = req.userid;
-    
-    // Query the database to fetch user information based on the user ID
-    db.query('SELECT * FROM users WHERE userid = ?', userId, (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'An error occurred while fetching user information' });
-      } else {
-        // Assuming the result is an object representing the user
-        res.status(200).json(result[0]);
-      }
-    });
-  });
-  app.post("/register", (req, res) => {
-    const { name, email, username, password, birth, gender, height, weight } = req.body;
+app.post("/register", (req, res) => {
+    const Name = req.body.Name;
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = req.body.password;
+    const birth = req.body.birth;
+    const gender = req.body.gender;
+    const height = req.body.height;
+    const weight = req.body.weight;
+
+
 
     db.query("INSERT INTO users (name, email, username, password, DOB, gender, height, weight) VALUES (?,?,?,?,?,?,?,?)",
         [name, email, username, password, birth, gender, height, weight],
         (err, result) => {
             if (err) {
-                console.error("Error registering user:", err);
-                return res.status(500).json({ message: "An error occurred while registering" });
+                console.error(err);
             }
+            if (result.length > 0) {
+                id = result[0].id;
+                name = result[0].name;
+                username = result[0].username;
+                const gender = result[0].gender;
+                const height = result[0].height;
+                const weight = result[0].weight;
+                const dob = result[0].DOB;
+                const xp = result[0].xp;
+                    // Assuming the user's name is stored in the 'name' column
+                   const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
+            
+            
+                   res.json({token});
+                }
+            return res.json({ message: "Successfully Registered" });
+        });
+});
 
-            if (result.affectedRows > 0) {
-                const id = result.insertId;
-                const xp = 0; // Assuming initial XP is 0
-                const token = jwt.sign({ id, name, email, username, gender, height, weight, birth, xp },"jwtSecertKey", { expiresIn: '1h' });
-                return res.json({ token });
-            } else {
-                return res.status(400).json({ message: "Registration failed" });
+// Fetches and Displays all challenges to the Challenges Screen
+app.get("/challenges", (req,res)=>{
+const q = 'SELECT * FROM challenges ORDER BY xp_val ASC';
+
+db.query(q,(err, results)=>{
+    if (err){
+        res.status(500).json({error: 'An error occured while fetching challenges'});
+    }
+    else{
+        res.json(results);
+      }
+})
+})
+
+app.put('/updateUserXP/:userId/:challengeXp', (req, res) => {
+    const userId = req.params.userId;
+    const challengeXp = req.params.challengeXp;
+
+    // Update user's XP in the users table
+    db.query(
+        'UPDATE users SET xp = xp + ? WHERE userid = ?',
+        [challengeXp, userId],
+        (err, result) => {
+            if (err) {
+                console.error('Error updating user XP:', err);
+                return res.status(500).json({ message: 'An error occurred while updating user XP' });
             }
+            console.log('User XP updated successfully');
+            return res.json({ message: 'User XP updated successfully' });
         }
     );
 });
 
+
+  //Totals all the minutes from a workout log and displays it
   app.get('/totalWorkoutMinutes', (req, res) => {
     db.query('SELECT SUM(duration) AS totalMinutes FROM workout_log', (err, result) => {
         if (err) {
@@ -242,6 +263,30 @@ app.get('/user', verifyJwt, (req, res) => {
             const totalMinutes = result[0].totalMinutes || 0;
             res.json({ totalMinutes });
         }
+    });
+});
+// Route to fetch nutrition log entries for a specific user
+app.get("/nutritionlog/:userId", (req, res) => {
+    const userId = req.params.userId;
+    const q = "SELECT n.name, n.calories, n.protein, n.carbohydrates, n.date FROM nutrition_log n JOIN users u on u.userid = n.userid WHERE u.userid = ?";
+    db.query(q, [userId], (err, data) => {
+        if (err) {
+            console.error('Error fetching nutrition log entries:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        return res.json(data);
+    });
+});
+// Route to fetch workout log entries for a specific user
+app.get("/workoutlog/:userId", (req, res) => {
+    const userId = req.params.userId;
+    const q = "SELECT w.name, w.type, w.duration,w.date FROM workout_log w JOIN users u on u.userid = w.userid WHERE u.userid = ?";
+    db.query(q, [userId], (err, data) => {
+        if (err) {
+            console.error('Error fetching nutrition log entries:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        return res.json(data);
     });
 });
 app.listen(8000, () => {

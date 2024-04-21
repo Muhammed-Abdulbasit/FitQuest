@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Leaderboard.css'; // Import CSS file for styling
 import { NavBar } from './components/NavBar';
-
+import { jwtDecode } from 'jwt-decode';
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+     setIsLoggedIn(true);
+    }
+  }, []);
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -21,7 +27,7 @@ const Leaderboard = () => {
 
   return (
     <div>
-      <NavBar/>
+      <NavBar isLoggedIn={isLoggedIn}/>
   <div className="leaderboard">
     <h2>Leaderboard</h2>
       <table>

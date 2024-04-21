@@ -15,8 +15,8 @@
 }
 
 
-.challenge-card.completed {
-    opacity: .5; 
+.challenge-card.disabled {
+    opacity: 0.5;
 }
 
 .challenge-card img {
