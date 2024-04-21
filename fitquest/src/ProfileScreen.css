@@ -35,4 +35,22 @@
   .ProfileScreen button:hover {
     background-color: #0056b3; /* Darken the background color on hover */
   }
-  
+  .LogEntriesBox{
+    width: fit-content;
+    margin: 25px
+  }
+  .LogEntriesBox th{
+    text-align: center;
+  }
+  .food-log, .food-log th{
+    margin: 25px;
+    text-align: center;
+  }
+  .Flex-Container{
+    padding-top: 10%;
+    display: flex;
+    width: 400px;
+    margin: auto;
+  position: relative;
+  left: -15%;
+  }

@@ -16,21 +16,7 @@ const db = mysql.createConnection({
     password: "ediong123", /* Change Pass */
     database: "fitquest"
 });
-const verifyJwt = (req,res,next) =>{
-    const token = req.headers["access-token"];
-    if(!token){
-        return res.json('Need a token');
-    }else{
-        jwt.verify(token,"jwtSecertKey", (err, decoded)=>{
-            if(err){
-                res.json("Not Authentificated")
-            }else{
-                req.userid = decoded.id;
-                next();
-            }
-        } )
-    }
-}
+
 app.get("/", (req, res) => {
     res.json("Hello backend");
 });
@@ -48,22 +34,25 @@ app.get('/users', (req, res) => {
     });
 });
 //********For Workout Log Table */
-app.post("/workoutlog", (req,res)=>{
+app.post("/workoutlog", (req, res) => {
     const name = req.body.name;
     const duration = req.body.duration;
     const type = req.body.type;
-    const date =req.body.date;
+    const date = req.body.date;
+    const userid = req.body.userid
 
-    db.query("INSERT INTO workout_log(name,duration,type,date) VALUES(?,?,?,?)",
-    [name, duration, type, date],
+    db.query(
+        "INSERT INTO workout_log(name, duration, type, date, userid) VALUES(?, ?, ?, ?, ?)",
+        [name, duration, type, date, userid],
     (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: "An error occurred while entering data" });
         }
-        console.log("Data Entered")
+            console.log("Data Entered");
         return res.json({ result });
-    });
+        }
+    );
 });
 
 //General for Now
@@ -105,16 +94,15 @@ app.put('/workoutlog/:id', (req, res) => {
     );
 });
 
-
 app.post("/nutritionlog", (req,res)=>{
     const name = req.body.name;
     const calorie = req.body.calorie;
     const protein = req.body.protein;
     const carbs = req.body.carbs;
     const date =req.body.date;
-
-    db.query("INSERT INTO nutrition_log(name,calories,protein,carbohydrates,date) VALUES(?,?,?,?,?)",
-    [name, calorie, protein,carbs, date],
+    const userid = req.body.userid
+    db.query("INSERT INTO nutrition_log(name,calories,protein,carbohydrates,date, userid) VALUES(?,?,?,?,?,?)",
+    [name, calorie, protein,carbs, date, userid],
     (err, result) => {
         if (err) {
             console.error(err);
@@ -124,6 +112,7 @@ app.post("/nutritionlog", (req,res)=>{
         return res.json({ result });
     });
 });
+
 
 //General for Now
 app.get("/nutritionlog", (req, res) => {
@@ -275,6 +264,30 @@ app.put('/updateUserXP/:userId/:challengeXp', (req, res) => {
             const totalMinutes = result[0].totalMinutes || 0;
             res.json({ totalMinutes });
         }
+    });
+});
+// Route to fetch nutrition log entries for a specific user
+app.get("/nutritionlog/:userId", (req, res) => {
+    const userId = req.params.userId;
+    const q = "SELECT n.name, n.calories, n.protein, n.carbohydrates, n.date FROM nutrition_log n JOIN users u on u.userid = n.userid WHERE u.userid = ?";
+    db.query(q, [userId], (err, data) => {
+        if (err) {
+            console.error('Error fetching nutrition log entries:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        return res.json(data);
+    });
+});
+// Route to fetch workout log entries for a specific user
+app.get("/workoutlog/:userId", (req, res) => {
+    const userId = req.params.userId;
+    const q = "SELECT w.name, w.type, w.duration,w.date FROM workout_log w JOIN users u on u.userid = w.userid WHERE u.userid = ?";
+    db.query(q, [userId], (err, data) => {
+        if (err) {
+            console.error('Error fetching nutrition log entries:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        return res.json(data);
     });
 });
 app.listen(8000, () => {
