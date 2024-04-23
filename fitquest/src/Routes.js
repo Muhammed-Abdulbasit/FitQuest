@@ -10,13 +10,7 @@ import { ProfileScreen } from './ProfileScreen';
 import Leaderboard from './Leaderboard';
 
 export const AppRoutes = () => {
-  // Define a state to store the user data
-  const [userData, setUserData] = React.useState(null);
 
-  // Callback function to receive user data from LoginScreen
-  const handleLogin = (userData) => {
-    setUserData(userData);
-  };
 
   return (
     <Router>
@@ -24,7 +18,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<LoginScreen />} />
         <Route path="/ChallengeScreen" element={<ChallengeScreen />} />
         {/* Pass handleLogin as a prop to LoginScreen */}
-        <Route path="/LogScreen" element={<LogScreen onLogin={handleLogin} />} />
+        <Route path="/LogScreen" element={<LogScreen  />} />
         <Route path="/Registration" element={<RegistrationScreen />} />
         <Route path="/AchievementsScreen" element={<AchievementsScreen />} />
         <Route path="/Leaderboard" element={<Leaderboard />} />

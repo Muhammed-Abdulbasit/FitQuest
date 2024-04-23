@@ -183,7 +183,7 @@ app.post("/login", (req, res) => {
 
 
 app.post("/register", (req, res) => {
-    const Name = req.body.Name;
+    const name = req.body.name;
     const email = req.body.email;
     const username = req.body.username;
     const password = req.body.password;
@@ -200,21 +200,7 @@ app.post("/register", (req, res) => {
             if (err) {
                 console.error(err);
             }
-            if (result.length > 0) {
-                id = result[0].id;
-                name = result[0].name;
-                username = result[0].username;
-                const gender = result[0].gender;
-                const height = result[0].height;
-                const weight = result[0].weight;
-                const dob = result[0].DOB;
-                const xp = result[0].xp;
-                    // Assuming the user's name is stored in the 'name' column
-                   const token = jwt.sign({ id, name, email, username, gender, height, weight, dob, xp}, "jwtSecertKey", { expiresIn: '1h' });
-            
-            
-                   res.json({token});
-                }
+          
             return res.json({ message: "Successfully Registered" });
         });
 });
