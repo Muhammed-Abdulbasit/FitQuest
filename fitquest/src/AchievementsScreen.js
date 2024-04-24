@@ -16,7 +16,7 @@ const achievementColors = {
 };
 
 export function AchievementsScreen() {
-  const [user, setUser] = useState({});
+
   const [unlockedAchievements, setUnlockedAchievements] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -24,7 +24,6 @@ export function AchievementsScreen() {
     if (token) {
       setIsLoggedIn(true);
       const decoded = jwtDecode(token);
-      setUser(decoded);
       const userXP = decoded.xp; // Assuming XP is stored in a property named 'xp'
       const unlockedAchievements = determineUnlockedAchievements(userXP);
       setUnlockedAchievements(unlockedAchievements);

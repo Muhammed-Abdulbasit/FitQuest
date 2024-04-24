@@ -1,5 +1,4 @@
 import './Registration.css';
-import { NavBar } from './components/NavBar';
 import { Link, Navigate} from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
@@ -43,7 +42,7 @@ const register =()=>{
     });
 }
 if(SignedUp){
-    return <Navigate to="/ProfileScreen"/>;
+    return <Navigate to="/LoginScreen"/>;
 
 }
 
@@ -57,7 +56,7 @@ if(SignedUp){
                 </div>
                 
                 <div>
-                   Full Name<br></br> <input type='text' placeholder='Enter Name' onChange={(e)=>{setName(e.target.value)}}/><br></br>
+                   Full Name<br></br> <input type='text' placeholder='Enter Name' width={100} onChange={(e)=>{setName(e.target.value)}}/><br></br>
                     Email <br></br><input type='email' placeholder='Enter Email' onChange={(e)=>{setEmail(e.target.value)}} /><br />
                     Username<br></br><input type='text' placeholder='Enter Username' onChange={(e)=>{setUsername(e.target.value)}} /><br></br>
                 Password<br></br> <input type="password" placeholder='Enter Password' id='password' name='password' onChange={(e)=>{setPassword(e.target.value)}}  /><br />
