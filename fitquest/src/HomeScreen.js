@@ -26,7 +26,7 @@ export function HomeScreen() {
         <h1 id='welcome-message'>Welcome, {user.name}</h1>
         <h3>We recommend these workouts for you</h3>
         <div className='homescreen-cards'>
-          <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs, specicially quads and overall lifting strength" img={squat}/>
+          <WorkoutCard title="Squats" desc="Barbell Squats are a great exercise for legs, specifically quads and overall lifting strength" img={squat}/>
           <WorkoutCard title="Stretches" desc="Stretches increase flexibility, improve range of motion, and reduce the chances of injury" img={stretching}/>
           <WorkoutCard title="Bicep Curls" desc="Bicep curls help build upper arm and pulling strength" img={curls}/>
           <WorkoutCard title="Running" desc="Running is great for improving stamina as well as cardiovascular and overall health" img={running}/>
